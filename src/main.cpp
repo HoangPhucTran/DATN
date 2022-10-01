@@ -4,12 +4,13 @@
 const int IN1=5;
 const int IN2=4;
 const int ENA=6;
+
 const int IN3=8;
 const int IN4=7;
 const int ENB=9;
 ////////////////////////////////////////////
 
-#define SETUP_MOTOR     \ 
+#define SETUP_MOTOR     \
 do{                     \
   pinMode(IN1, OUTPUT); \
   pinMode(IN2, OUTPUT); \
@@ -20,8 +21,8 @@ do{                     \
   pinMode(ENB, OUTPUT); \
 }while(0);
 
-void Motor1_Forward();
-void Motor1_Backward();
+void Motor1_Forward(int Speed);
+void Motor1_Backward(int Speed);
 void Motor1_Brake();
 void Motor2_Forward(int Speed);
 void Motor2_Backward(int Speed);
@@ -34,7 +35,16 @@ void setup() {
 }
 
 void loop() {
+
+  delay(3000);
+
+  Motor1_Backward(40);
+  Motor2_Backward(40);
+
+  // Motor2_Forward(20);
+  // nen <127 de tiet kiem dien  
   // put your main code here, to run repeatedly:
+  // delay(500);  
 }
 
 void Motor1_Forward(int Speed)
