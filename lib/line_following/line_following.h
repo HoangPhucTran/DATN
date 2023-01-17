@@ -91,4 +91,43 @@ void read_sensor_values();
 void command_mode();
 void calculatePID();
 void motorPIDcontrol();
+
+///////DC PUMP////////
 void dc_pump(int state);
+//////////////////////
+// #define IN1_PUMP  x
+// #define IN2_PUMP  Y
+// void setup()
+// {
+// 	pinMode(IN1_PUMP, OUTPUT);
+// 	pinMode(IN2_PUMP, OUTPUT);
+// }
+// void DC_pump_stop() {
+// 	digitalWrite(IN1_PUMP, LOW);
+// 	digitalWrite(IN2_PUMP, LOW);
+// }
+// void DC_pump_run() {
+// 	digitalWrite(IN1_PUMP, HIGH);// chân này không có PWM
+// 	analogWrite(IN2_PUMP, 255 - speed); // tuy mode chay
+// }
+//////////////////////
+/////////LCD//////////
+//https://arduinokit.vn/giao-tiep-i2c-lcd-arduino/
+// #include <Wire.h> 
+// #include <LiquidCrystal_I2C.h>
+// LiquidCrystal_I2C lcd(0x3F,16,2); 
+
+// void setup()
+// {
+//   lcd.init();                    
+//   lcd.backlight();
+//   lcd.setCursor(2,0);
+//   lcd.print("Arduinokit.vn");
+//   lcd.setCursor(0,1);
+//   lcd.print("Xin chao cac ban");
+// }
+
+// void loop()
+// {
+// }
+//////////////////////

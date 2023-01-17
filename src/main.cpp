@@ -1,5 +1,9 @@
 #include <Arduino.h>
 #include "line_following.h"
+
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27,16,2); 
 // 0.5 m/s  -> 1,06v/s
 
 void setup() {
@@ -11,7 +15,12 @@ void setup() {
   SETUP_MOTOR
   SETUP_SENSOR
   digitalWrite(power_sensor, HIGH);
-  
+  lcd.init();                    
+  lcd.backlight();
+  lcd.setCursor(2,0);
+  lcd.print("DHSPKT HCM");
+  lcd.setCursor(0,1);
+  lcd.print("Xin chao cac ban");
 }
 
 void loop() {  
@@ -23,6 +32,11 @@ b3 : 1 la chay do line, 2 la chay manual trong dong while
 b4 : neu chay do line thi tinh pid
 b5 : 
 */
+while (1)
+{
+  Forwardmottor(100);
+}
+
   if ((stringComplete) ) {
   Serial.println("\n\n\n______test________");
   Serial.println(inputString);
@@ -30,6 +44,14 @@ b5 :
   Serial.println(command[1]);
   Serial.println(command[2]);
   Serial.println(command[3]);
+    lcd.clear();
+  lcd.setCursor(1,0);
+  lcd.print("aa");
+
+  lcd.setCursor(4,0);
+  lcd.print(inputString);
+  lcd.setCursor(0,1);
+  lcd.print(command[0]);
   Serial.println("\n\n\n______test end");
   inputString = "";
   stringComplete = false;
@@ -272,6 +294,9 @@ void command_mode()
     switch (command[0])
     {
     case 'w':
+      lcd.clear();
+      lcd.setCursor(1,0);
+      lcd.print("wwwww ne ");
       Forwardmottor(50);
       delay(500);
       if (command[2] == 'p') Motor_Brake();      
