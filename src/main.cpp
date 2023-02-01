@@ -5,7 +5,7 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27,16,2); 
 // 0.5 m/s  -> 1,06v/s
-
+float PID_value_pre = 0 ;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600); 
@@ -14,7 +14,14 @@ void setup() {
 
   SETUP_MOTOR
   SETUP_SENSOR
-  digitalWrite(power_sensor, HIGH);
+
+  // digitalWrite(power_sensor, HIGH);
+
+  pinMode(IN1_pump, OUTPUT);
+  pinMode(IN2_pump, OUTPUT);
+  digitalWrite(IN1_pump, LOW);
+  digitalWrite(IN2_pump, LOW);
+
   lcd.init();                    
   lcd.backlight();
   lcd.setCursor(2,0);
@@ -31,12 +38,9 @@ b2 : phan tach command de lay du lieu
 b3 : 1 la chay do line, 2 la chay manual trong dong while 
 b4 : neu chay do line thi tinh pid
 b5 : 
-*/
-while (1)
-{
-  Forwardmottor(100);
-}
 
+  
+*/  
   if ((stringComplete) ) {
   Serial.println("\n\n\n______test________");
   Serial.println(inputString);
@@ -44,13 +48,14 @@ while (1)
   Serial.println(command[1]);
   Serial.println(command[2]);
   Serial.println(command[3]);
-    lcd.clear();
+  
+  lcd.clear();
   lcd.setCursor(1,0);
   lcd.print("aa");
 
   lcd.setCursor(4,0);
   lcd.print(inputString);
-  lcd.setCursor(0,1);
+  lcd.setCursor(0,1); 
   lcd.print(command[0]);
   Serial.println("\n\n\n______test end");
   inputString = "";
@@ -97,11 +102,11 @@ void Motor_Brake()
 void Turn_Right(int Speed)
 {
   Motor1_Forward(Speed);
-  Motor2_Brake();
+  Motor2_Backward(0.2*Speed);
 }
 void Turn_Left(int Speed)
 {
-  Motor1_Brake();
+  Motor1_Backward(0.2*Speed);
   Motor2_Forward(Speed);
 }
 void reverse(int Speed)
@@ -153,6 +158,23 @@ void read_sensor_values()
   sensor[2] = digitalRead(SENSOR3);
   sensor[3] = digitalRead(SENSOR4);
   sensor[4] = digitalRead(SENSOR5);
+
+  // delay(500);
+  // lcd.clear();
+  // lcd.setCursor(2,0);
+  // lcd.print("LINE FOLLOWING MODE");
+  //   lcd.setCursor(0,1);
+  // lcd.print("sensor");
+  // lcd.setCursor(6,1);
+  // lcd.print(sensor[0]);
+  // lcd.setCursor(7,1);
+  // lcd.print(sensor[1]);
+  // lcd.setCursor(8,1);
+  // lcd.print(sensor[2]);
+  // lcd.setCursor(9,1);
+  // lcd.print(sensor[3]);
+  // lcd.setCursor(10,1);
+  // lcd.print(sensor[4]);
   // doc duoc la 0 khong duoc la 1
   // 11111
   // 01111
@@ -177,17 +199,17 @@ void read_sensor_values()
   // academia.edu/15513253/Robot_do_line
 
   // if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))         { error = 0;} 
-  if ((sensor[0] == 0) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))    { error = -4; action =1;}
-  else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))    { error = -3; action =1;}
-  else if ((sensor[0] == 1) && (sensor[1] == 0) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))    { error = -2; action =1;}
-  else if ((sensor[0] == 1) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 1))    { error = -1; action =1;}
-  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 1))    {  error = 0; action =1;}
-  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 1))    { error = 1; action =1;}
-  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 0) && (sensor[4] == 1))    { error = 2; action =1;}
-  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 0) && (sensor[4] == 0))    { error = 3; action =1;}
-  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 0))    { error = 4; action =1;}
-  else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))    {action =0; Motor_Brake();}
-  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))    {action =0; Motor_Brake();}
+  if ((sensor[0] == 0) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))    { error = -4;}
+  else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))    { error = -3;}
+  else if ((sensor[0] == 1) && (sensor[1] == 0) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))    { error = -2;}
+  else if ((sensor[0] == 1) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 1))    { error = -1;}
+  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 1))    {  error = 0;}
+  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 1))    { error = 1;}
+  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 0) && (sensor[4] == 1))    { error = 2;}
+  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 0) && (sensor[4] == 0))    { error = 3;}
+  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 0))    { error = 4;}
+  else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))    {Motor_Brake(); error = 0;}
+  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))    {Motor_Brake(); error = 0;}
   // doc duoc la 0 khong duoc la 1
   // 11111
   // 01111
@@ -266,7 +288,17 @@ void serialEvent() {
     Serial.println(inputString.length());
 
     Serial.println("___11111111___");
-
+    // if (inputString == '1') {
+    //   delay(20);
+    //   while (Serial1.available()) {
+    //      delay(20);
+    //      char inChar = (char)Serial1.read();
+    //      inputString += inChar;
+    //       Serial.println("aaaaaaaaaaaaaaaaa");
+    //       Serial.println(inputString);
+    //       Serial.println("-----");
+    //   }
+    // }
     if (inputString.length() == 2) {
       delay(20);
       while (Serial1.available()) {
@@ -297,27 +329,26 @@ void command_mode()
       lcd.clear();
       lcd.setCursor(1,0);
       lcd.print("wwwww ne ");
-      Forwardmottor(50);
-      delay(500);
+      Forwardmottor(40);
       if (command[2] == 'p') Motor_Brake();      
       break;
     case 's':
+      dc_pump(0);
       Backward(40);  
-      delay(500);
       if (command[2] == 'p') Motor_Brake();      
       break;
     case 'd':
-      Turn_Right(50);
-      delay(500);
+      dc_pump(0);
+      Turn_Right(45); 
       if (command[2] == 'p') Motor_Brake();      
       break;
     case 'a':
-      Turn_Left(50);
-      delay(500);
+      dc_pump(0);
+      Turn_Left(45);
       if (command[2] == 'p') Motor_Brake();      
       break;
     case 'l':
-      (command[2] == 'b') && (command[3] == '1') ? dc_pump(1) : dc_pump(0);
+      // (command[2] == 'b') && (command[3] == '1') ? dc_pump(1) : dc_pump(0);
       mode = FOLLOWING_LINE;
       break;
     case 'b':
@@ -325,6 +356,7 @@ void command_mode()
       break;    
     case 'p':
       Motor_Brake(); // stop motor
+      mode = STOPPED;
       (command[2] == 'b') && (command[3] == '0') ? dc_pump(0) : dc_pump(1);
       break;
     }
@@ -332,7 +364,6 @@ void command_mode()
 
 void calculatePID()
 {
-  error = error;
   P = error;
   I += error;
   D = (error - previous_error) ;
@@ -343,8 +374,8 @@ void calculatePID()
 void motorPIDcontrol()
 {
   // Calculating the effective motor speed:
-  left_motor_speed  = 18 + PID_value;   // dau -
-  right_motor_speed = 18 - PID_value;   // dau +
+  left_motor_speed  = 17 + PID_value;   // dau -
+  right_motor_speed = 17 - PID_value;   // dau +
   // Serial.print("PID= ");  Serial.println(PID_value);
   // The motor speed should not exceed the max PWM value    
   // constrain(left_motor_speed, 0, 127);
@@ -362,8 +393,34 @@ void motorPIDcontrol()
         right_motor_speed = 0;
 
   // nen <127 de tiet kiem dien   / truot dai
-  Motor1_Forward(left_motor_speed);
-  Motor2_Forward(right_motor_speed);
+  if(PID_value != PID_value_pre)
+  {
+      delay(20);
+  lcd.clear();
+  //   lcd.setCursor(0,0);
+  // lcd.print("sensor");
+  // lcd.setCursor(6,0);
+  // lcd.print(sensor[0]);
+  // lcd.setCursor(7,0);
+  // lcd.print(sensor[1]);
+  // lcd.setCursor(8,0);
+  // lcd.print(sensor[2]);
+  // lcd.setCursor(9,0);
+  // lcd.print(sensor[3]);
+  // lcd.setCursor(10,0);
+  // lcd.print(sensor[4]);
+      lcd.setCursor(12,0);
+  lcd.print(PID_value);
+      lcd.setCursor(0,1);
+  lcd.print("DCLR ");
+    lcd.setCursor(7,1);
+  lcd.print(left_motor_speed);
+    lcd.setCursor(12,1);
+  lcd.print(right_motor_speed);
+  }
+
+   Motor1_Forward(left_motor_speed);
+   Motor2_Forward(right_motor_speed);
 }
 
 //////////// DC PUMP ////////////
@@ -372,10 +429,43 @@ void dc_pump(int state)
   if (state == 1)
   {
     //on
+    digitalWrite(IN1_pump, HIGH);
+    digitalWrite(IN2_pump, LOW);
   }
   else
   {
     //off
+    digitalWrite(IN1_pump, LOW);
+    digitalWrite(IN2_pump, LOW);
   }
 }
-/////////////////////////////////
+
+
+
+/*
+  driver cho dong co phun
+  int ENA_pump = 9; // tu chon chan
+  int IN1_pump = 8;
+  int IN2_pump = 7;
+
+void setup() 
+{
+  pinMode(ENA_pump, OUTPUT);
+  pinMode(IN1_pump, OUTPUT);
+  pinMode(IN2_pump, OUTPUT);
+}
+  digitalWrite(IN1_pump, LOW);
+  digitalWrite(IN2_pump, LOW);
+
+  void motor_pump_on()
+  {
+    digitalWrite(IN1_pump, HIGH);
+    digitalWrite(IN2_pump, LOW);
+  }
+
+  void motor_pump_off()
+  {
+    digitalWrite(IN1_pump, LOW);
+    digitalWrite(IN2_pump, LOW);
+  }
+*/

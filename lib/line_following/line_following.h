@@ -21,6 +21,8 @@ const int IN3=10; // 8 hu
 const int IN4=7;
 const int ENB=9;
 ////////////////////////////////////////////
+  const int IN1_pump = 52;
+  const int IN2_pump = 40;
 
 ///////////////  FOR SENSOR  ///////////////
 const int SENSOR1 = 42;
@@ -28,7 +30,7 @@ const int SENSOR2 = 44;
 const int SENSOR3 = 46;
 const int SENSOR4 = 48;
 const int SENSOR5 = 50;
-const int power_sensor = 52; // out put 5v for sensor
+// const int power_sensor = 52; // out put 5v for sensor
 
 // const int HONGNGOAI = 49;    
 // const int CONGTAC = 47;
@@ -36,11 +38,12 @@ const int power_sensor = 52; // out put 5v for sensor
 // Initial Values of Sensors
 int sensor[5] = {0, 0, 0, 0, 0};  
 float error = 0 ;// result of handling data sensor  
-int action = 0;
 ////////////////////////////////////////////
 
 /////////////////FOR PID////////////////////
-  float Kp=7.5, Kd=5, Ki=0;
+  float Kp=5, Kd=2, Ki=0;
+  // float Kp=20, Kd=0, Ki=0; // mach cau h xanh la l298n
+
   
   float P, I, D;
   float samplingTime = 0.01;
@@ -57,8 +60,9 @@ do{                              \
   pinMode(SENSOR3, INPUT);       \
   pinMode(SENSOR4, INPUT);       \
   pinMode(SENSOR5, INPUT);       \
-  pinMode(power_sensor, OUTPUT);       \
 }while (0);
+
+//  pinMode(power_sensor, OUTPUT);       \
 
 #define SETUP_MOTOR     \
 do{                     \
@@ -112,7 +116,7 @@ void dc_pump(int state);
 // }
 //////////////////////
 /////////LCD//////////
-//https://arduinokit.vn/giao-tiep-i2c-lcd-arduino/
+// https://arduinokit.vn/giao-tiep-i2c-lcd-arduino/
 // #include <Wire.h> 
 // #include <LiquidCrystal_I2C.h>
 // LiquidCrystal_I2C lcd(0x3F,16,2); 
@@ -131,3 +135,5 @@ void dc_pump(int state);
 // {
 // }
 //////////////////////
+
+
