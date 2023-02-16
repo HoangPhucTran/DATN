@@ -23,6 +23,8 @@ const int ENB=9;
 ////////////////////////////////////////////
   const int IN1_pump = 52;
   const int IN2_pump = 40;
+  const int ENA_pump = 11;
+
 
 ///////////////  FOR SENSOR  ///////////////
 const int SENSOR1 = 42;
@@ -41,9 +43,8 @@ float error = 0 ;// result of handling data sensor
 ////////////////////////////////////////////
 
 /////////////////FOR PID////////////////////
-  float Kp=5, Kd=2, Ki=0;
-  // float Kp=20, Kd=0, Ki=0; // mach cau h xanh la l298n
 
+  float Kp=4.9  , Kd=16,  Ki = 0;
   
   float P, I, D;
   float samplingTime = 0.01;
