@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../../do_line"
+		},
+		{
+			"name": "DATN_Arduino",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"exception": "cpp",
+			"limits": "cpp"
+		}
+	}
+}

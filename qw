@@ -1,0 +1,17 @@
+* [33mcommit 2b88b2b3dc32119955253cb9c37f321e46d0e1b0[m[33m ([m[1;36mHEAD -> [m[1;32mconnect_to_webserver[m[33m, [m[1;32mmaster[m[33m, [m[1;32mDevelop_Line_Following[m[33m)[m
+[31m|[m Author: HoangPhuc <tranhoangphuc114@gmail.com>
+[31m|[m Date:   Sat Jan 14 09:54:56 2023 +0700
+[31m|[m 
+[31m|[m     Done line
+[31m|[m 
+* [33mcommit 2d940ecf767b2931005e94434308fdb29eee570f[m
+[31m|[m Author: HoangPhuc <tranhoangphuc114@gmail.com>
+[31m|[m Date:   Sat Oct 1 21:48:47 2022 +0700
+[31m|[m 
+[31m|[m     End of programing driver
+[31m|[m 
+* [33mcommit 2cdc29c510e00584ba0e22b40dd4d176fe43e125[m[33m ([m[1;31morigin/master[m[33m)[m
+  Author: HoangPhuc <tranhoangphuc114@gmail.com>
+  Date:   Thu Jun 30 22:22:04 2022 +0700
+  
+      C1 - Programing driver DC motor
